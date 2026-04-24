@@ -1,8 +1,10 @@
 from .db import Base 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from sqlalchemy import Column, String, Text, DateTime
 
+# Create a timezone object for IST
+IST = timezone(timedelta(hours=5, minutes=30))
 
 # MODEL
 class Post(Base):
@@ -13,5 +15,5 @@ class Post(Base):
     url = Column(String(255), nullable=False)
     file_type = Column(String(50), nullable=False)
     file_name = Column(String(255), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
+    # Store with IST timezone
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(IST))
